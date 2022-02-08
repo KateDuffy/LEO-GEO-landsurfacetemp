@@ -1,0 +1,23 @@
+#PBS -S /bin/bash
+#PBS -q devel
+#PBS -j eo
+#PBS -m e
+#PBS -N 90_4_1_360_training_data_2hr
+#PBS -W group_list=s1007
+#PBS -l site=needed=/home1+/nex+/nobackupp10
+#PBS -l select=90:ncpus=4:mpiprocs=1:model=sky_ele,walltime=2:00:00
+
+module purge
+module load mpi-sgi/mpt
+source ~/.bashrc
+source activate rioxarray
+
+
+mpiexec -np 360 python mpi.prepare_training_data.py
+
+# successful
+# 10 10 5 10
+# 10 4 1 10
+# 20 4 1 8
+# 40 4 1 160
+# 90 4 1 360 
