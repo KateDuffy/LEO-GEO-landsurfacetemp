@@ -1,0 +1,16 @@
+#PBS -S /bin/bash
+#PBS -q v100@pbspl4
+#PBS -j eo
+#PBS -m e
+#PBS -N inference_G16
+#PBS -W group_list=s1007
+#PBS -l site=needed=/home1+/nex+/nobackupp10
+#PBS -l select=4:ngpus=1:ncpus=4:mpiprocs=4:model=sky_gpu,walltime=2:00:00
+
+module purge
+module load mpi-sgi/mpt
+source ~/.bashrc
+source activate geo
+
+
+mpiexec -np 16 python mpi.inference.py
