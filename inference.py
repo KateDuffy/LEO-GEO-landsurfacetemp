@@ -107,8 +107,8 @@ def single_inference(x, model):
         Dictonary of predicted LST ("loc") and clear sky probability ("probs")
         
     '''    
-
-    y_hat, sigma, y_prob = model(torch.unsqueeze(x, 0).type(torch.FloatTensor).to("cuda:0"), train=False)
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    y_hat, sigma, y_prob = model(torch.unsqueeze(x, 0).type(torch.FloatTensor).to(device), train=False)
     
     out = {'loc':np.squeeze(y_hat, axis=-1),
            "probs": np.squeeze(y_prob, axis=-1)}
@@ -199,18 +199,18 @@ def get_elevation(ds, elevation):
         Dictonary of predicted LST ("loc") and clear sky probability ("probs")
         
     '''  
-    
-        y1, y2 = np.min(ds.lat.values)-1, np.max(ds.lat.values)+1
-        x1, x2 = np.min(ds.lon.values)-1, np.max(ds.lon.values)+1
-        elevation_patch =  elevation.sel(y=slice(y1, y2)).sel(x=slice(x1, x2))
 
-        elevation_patch.load()
-        elevation_patch = elevation_patch.interpolate_na(dim="x", method="linear")
-        elevation_patch = elevation_patch.interp(y=ds.lat, x=ds.lon)
-        return elevation_patch.z.values/8518.0
+    y1, y2 = np.min(ds.lat.values)-1, np.max(ds.lat.values)+1
+    x1, x2 = np.min(ds.lon.values)-1, np.max(ds.lon.values)+1
+    elevation_patch =  elevation.sel(y=slice(y1, y2)).sel(x=slice(x1, x2))
+
+    elevation_patch.load()
+    elevation_patch = elevation_patch.interpolate_na(dim="x", method="linear")
+    elevation_patch = elevation_patch.interp(y=ds.lat, x=ds.lon)
+    return elevation_patch.z.values/8518.0
 
                 
-def inference_GEO(model_path, tile, year=2020, doy=1, sensor="G16"):  
+def inference_GEO(model_path, save_directory, tile, year=2020, doy=1, sensor="G16"):  
     '''
     Peform LST inference on L1G data and save prediction
     
@@ -218,6 +218,8 @@ def inference_GEO(model_path, tile, year=2020, doy=1, sensor="G16"):
     ----------
     model_path: str
         Directory location of saved Pytorch model, checkpoint.pth.tar
+    save_directory: str
+        Directory location to save inferences
     tile: string
         GeoNEX tile for which to perform inference, such as 'h08v01'
     year: int
@@ -229,7 +231,7 @@ def inference_GEO(model_path, tile, year=2020, doy=1, sensor="G16"):
         
     '''    
 
-    save_directory = "/nobackupp13/kmduffy1/NEXAI-LST/%s/%04d/%03d/" % (tile, year, doy)
+    save_directory = "%s/%s/%04d/%03d/" % (save_directory, tile, year, doy)
     if not os.path.exists(save_directory):
         os.makedirs(save_directory)
 
@@ -271,7 +273,7 @@ def inference_GEO(model_path, tile, year=2020, doy=1, sensor="G16"):
                         elevation = get_elevation(geo_data, elevation_ds)
                         elevation = tf_mask(elevation)
                         geo_bands = torch.cat((geo_bands, elevation), dim=0)
-                        
+
                         out = single_inference_split(geo_bands, model, "terra")
                         ds = geo_data.copy()
                         ds = ds.expand_dims(time=[timestamp])
@@ -288,3 +290,15 @@ def inference_GEO(model_path, tile, year=2020, doy=1, sensor="G16"):
                 else:
                     print("bad L1G on ", file)
 
+
+                    
+if __name__ == "__main__":
+
+model_path = '/nobackupp13/kmduffy1/cross_sensor_training/models/mod11a1/L1G_terra_b7to16_128h_2019/'
+save_directory = "/nobackupp13/kmduffy1/NEXAI-LST"
+tile = 'h08v01'
+year = 2020
+doy = 1
+sensor = "G16"
+
+inference_GEO(model_path, save_directory, tile, year, doy, sensor)
