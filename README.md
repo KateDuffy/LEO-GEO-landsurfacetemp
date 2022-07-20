@@ -12,7 +12,7 @@ git clone https://github.com/KateDuffy/LEO-GEO-landsurfacetemp.git
 Create conda environment
 ```
 conda env create -f environment.yml
-conda activate env
+conda activate lst
 ```
 
 ## Datasets
