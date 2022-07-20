@@ -7,7 +7,6 @@ Geostationary (GEO) sensors provide near-continuous, continental-scale observati
 Clone repository
 ```
 git clone https://github.com/KateDuffy/LEO-GEO-landsurfacetemp.git
-
 ```
 
 Create conda environment
