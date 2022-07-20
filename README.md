@@ -2,6 +2,20 @@
 
 Geostationary (GEO) sensors provide near-continuous, continental-scale observations which can better capture the diurnal variability of land surface temperature (LST) than intermittent observations from low-earth orbit (LEO) sensors. This repository contains code to pair co-located, co-temporal observations from LEO and GEO satellites, train a convolutional neural network to predict MODIS-like LST from GEO thermal emissive bands, and perform inference on GEO observations. The resulting NASA Earth eXchange Artificial Intelligence LST (NEXAI-LST) achieved a mean absolute error of 1.73 K relative to the target LEO product and improves on both spatial and temporal resolution [2km, 10 minute] compared to the GEO full disk standard product [10km, hourly].
 
+## Install
+
+Clone repository
+```
+git clone https://github.com/KateDuffy/LEO-GEO-landsurfacetemp.git
+
+```
+
+Create conda environment
+```
+conda env create -f environment.yml
+conda activate env
+```
+
 ## Datasets
 This project uses datasets from the NASA Earth eXchange (NEX). One year of NEXAI-LST data is available through [https://data.nas.nasa.gov](https://data.nas.nasa.gov/geonex/geonexdata/ML/nexai-lst/). This data is considered provisional and is provided to facilitate data exploration and further studies.
 
