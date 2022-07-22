@@ -4,7 +4,6 @@ import numpy as np
 from functools import partial
 import xarray as xr
 import matplotlib.pyplot as plt
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 import os
 from random import shuffle
 import torch
@@ -294,11 +293,11 @@ def inference_GEO(model_path, save_directory, tile, year=2020, doy=1, sensor="G1
                     
 if __name__ == "__main__":
 
-model_path = '/nobackupp13/kmduffy1/cross_sensor_training/models/mod11a1/L1G_terra_b7to16_128h_2019/'
-save_directory = "/nobackupp13/kmduffy1/NEXAI-LST"
-tile = 'h08v01'
-year = 2020
-doy = 1
-sensor = "G16"
+    model_path = '/nobackupp13/kmduffy1/cross_sensor_training/models/mod11a1/L1G_terra_b7to16_128h_2019/'
+    save_directory = "/nobackupp13/kmduffy1/NEXAI-LST"
+    tile = 'h08v01'
+    year = 2020
+    doy = 1
+    sensor = "G16"
 
-inference_GEO(model_path, save_directory, tile, year, doy, sensor)
+    inference_GEO(model_path, save_directory, tile, year, doy, sensor)
