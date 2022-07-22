@@ -1,7 +1,6 @@
 import glob
 import tqdm
 import numpy as np
-from functools import partial
 import xarray as xr
 import matplotlib.pyplot as plt
 import os
