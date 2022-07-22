@@ -4,13 +4,11 @@ import numpy as np
 import xarray as xr
 import matplotlib.pyplot as plt
 import os
-from random import shuffle
 import torch
 from torchvision import transforms
 import datetime
 
 from models import emulator
-# from data.prepare_training_data_ABI import get_geonex_tile_from_latlon_l1g, read_MOD11A1, crop_and_interp
 from train_emulator import transform_sensor
 from utils import get_sensor_stats, unnormalize
 from data import geonexl1g
