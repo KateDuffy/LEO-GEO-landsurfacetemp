@@ -15,6 +15,11 @@ conda env create -f environment.yml
 conda activate lst
 ```
 
+Install appropriate PyTorch distribution (See: https://pytorch.org/)
+```
+conda install pytorch torchvision torchaudio cudatoolkit=10.2 -c pytorch
+```
+
 ## Datasets
 This project uses datasets from the NASA Earth eXchange (NEX). One year of NEXAI-LST data is available through [https://data.nas.nasa.gov](https://data.nas.nasa.gov/geonex/geonexdata/ML/nexai-lst/). This data is considered provisional and is provided to facilitate data exploration and further studies.
 
